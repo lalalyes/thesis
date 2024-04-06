@@ -1,0 +1,42 @@
+% !TEX root = ../main.tex
+
+\begin{abstract}[zh]
+越来越多的图状结构数据包含时序信息，这些时序信息描述了实体和关系的生命周期，时序图是表示包含时序信息的图状结构数据的常用模型。
+时序图的更新、时序图查询和时序图分析是三类最为重要的时序图处理任务。
+时序图查询可以是面向时序图的特定版本（包括最新版本和历史版本）的基于图拓扑的查询，也可以是基于时序图中顶点/边的生命周期信息的查询。
+时序图分析任务同样既可以是在时序图的特定版本上的普通图分析任务，也可以使用时序图的生命周期信息运行更为复杂的图分析算法。
+
+时序RDF图、时序超图和时序属性图是定义时序图结构的三大模型，但面向时序RDF图和时序超图的时序图查询并不是热点研究方向，相关系统研究工作不多，且性能难以令人满意。
+在线图分析系统通常使用时序属性图模型作为其数据模型，与离线图分析系统相比，这类系统同时实现了图的更新和分析，且能够在图更新完成后的很短时间内对其进行分析，大大提高了图分析的时效性，但这要以大幅牺牲图分析性能为代价。
+
+针对上述问题，本文设计并实现了一个高效的时序图处理系统\sys，它由时序图查询和时序图分析两大模块组成。
+系统的时序图查询模块同时支持时序RDF图和时序超图的高效查询，它使用了基于RDMA的分布式键值存储辅以分布式排序数组的存储结构，键值存储使用了直接索引和间接索引相结合的设计，在实现了高效的
+拓扑查询和时间条件查询的同时，减少了时序数据存储的内存使用。
+系统的时序图分析模块实现了图的事务化更新和实时的第一类时序图分析，它使用了一个高效可更新的时序属性图存储结构\newstore，并使用了一种粗粒度的多版本并发控制机制来减少时序数据带来的内存使用和图分析时的额外计算开销。
+
+本文从多个角度对\sys 进行了全面的性能评测，测试结果表明，与图数据库NebulaGraph和Neo4j相比，\sys 的时序图查询都有一个数量级以上的性能提升，\sys 的图分析性能是目前最先进的在线图分析系统LiveGraph的1.4\textasciitilde 4.4倍。
+
+\end{abstract}
+
+\begin{abstract}[en]
+More and more graph-structured data contain temporal information, which describes the lifespan of entities and relationships. 
+Temporal graph is a commonly used model to represent graph-structured data with temporal information. 
+The three most important temporal graph processing tasks are temporal graph updating, temporal graph query, and temporal graph analysis.
+A temporal graph query can be either a topology-based query on a specific version (the latest or historical version) of the temporal graph, or a query based on the lifespan information of vertices/edges in the temporal graph. 
+A temporal graph analysis task can be either a regular graph analysis task on a specific version of the temporal graph, or a more complex graph analysis algorithm that utilizes the lifespan information of the temporal graph.
+
+The three major models defining the structure of a temporal graph are the temporal RDF graph, the temporal hypergraph, and the temporal property graph.
+Temporal graph query on the temporal RDF graph and hypergraph is not a hot research topic, with limited relevant system research and unsatisfactory system performance. 
+Online graph analysis systems typically use temporal property graph model as their data model. Compared to offline graph analysis systems, these systems can achieve both graph updating and analysis, enabling them to analyze the graph shortly after it is updated, greatly improving the freshness of graph analysis. 
+However, this comes at the cost of sacrificing graph analysis performance significantly.
+
+To address the above issues, this paper designs and implements an efficient temporal graph processing system called \sys, which consists of two modules: temporal graph query and analysis. 
+The temporal graph query module of the system supports efficient query for both temporal RDF graph and hypergraph. 
+Its storage structure is a distributed key-value storage, supplemented by distributed sorted arrays based on RDMA.
+The key-value storage adopts a design that combines direct and indirect indexing, which achieves efficient topological and time-condition queries while reducing the memory usage for storing temporal data. 
+The temporal graph analysis module of the system implements transactional graph updating and real-time type-1 temporal graph analysis. 
+It utilizes an efficient updatable temporal property graph storage structure called \newstore, and a coarse-grained multi-version concurrency control mechanism to reduce memory usage and additional computational overhead during graph analysis caused by temporal data.
+
+Comprehensive performance evaluations of \sys are conducted from multiple perspectives in this paper.
+The evaluation results demonstrate that compared to graph databases NebulaGraph and Neo4j, \sys \ achieves temporal graph query performance improvements of over an order of magnitude, and its graph analysis performance is 1.4\textasciitilde 4.4 times better than that of the state-of-the-art online graph analysis system LiveGraph.
+\end{abstract}
